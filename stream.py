@@ -14,7 +14,7 @@ def local_css():
         /* 标题样式 */
         .title {
             text-align: center;
-            color: #2F4F4F;
+            color: #FF8C00;  /* 标题颜色为橙色 */
             font-weight: bold;
             font-size: 36px;
             margin-bottom: 10px;
@@ -23,7 +23,7 @@ def local_css():
         label {
             font-weight: 600;
             font-size: 18px;
-            color: #2F4F4F;
+            color: #11171C;  /* 修改为深灰色 */
         }
         /* 按钮样式 */
         .stButton > button {
@@ -41,7 +41,7 @@ def local_css():
         }
         /* 侧边栏样式 */
         .sidebar .sidebar-content {
-            background-image: linear-gradient(#2F4F4F,#708090);
+            background-image: linear-gradient(#A9A9A9,#708090);
             color: white;
         }
         .sidebar .sidebar-content h2 {
@@ -54,11 +54,11 @@ def local_css():
         }
         /* 输入框样式 */
         .stTextArea textarea {
-            background-color: #ffffff;
-            color: #2F4F4F;
-            font-size: 16px;
+            color: #ffffff;  /* 输入框内字体颜色为白色 */
+            font-size: 18px;
             border-radius: 8px;
             border: 1px solid #ccc;
+            background-color: #11171C;  /* 输入框背景颜色修改为深灰色 */
         }
         /* 调整标题位置 */
         .css-18e3th9 {
@@ -66,7 +66,6 @@ def local_css():
         }
         /* 表单布局 */
         .stForm {
-            background-color: #ffffff;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
@@ -77,6 +76,7 @@ def local_css():
         }
         </style>
         """, unsafe_allow_html=True)
+
 
 def main():
     local_css()
@@ -100,8 +100,6 @@ def main():
     else:
         input_fields = ["上线日期", "目的", "人群", "素材", "设备（无用$占位）", "定向城市（无用$占位）", "搭建日期（无用$占位）"]
         separator = "-"
-
-    st.write("---")  # 分割线
 
     st.subheader("请输入以下信息")
     st.markdown("""
