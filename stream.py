@@ -23,7 +23,7 @@ def local_css():
         label {
             font-weight: 600;
             font-size: 18px;
-            color: #11171C;  /* 修改为深灰色 */
+            color: #A9A9A9;  /* 修改为深灰色 */
         }
         /* 按钮样式 */
         .stButton > button {
@@ -51,14 +51,6 @@ def local_css():
         .sidebar .sidebar-content .option {
             font-size: 18px;
             font-weight: 500;
-        }
-        /* 输入框样式 */
-        .stTextArea textarea {
-            color: #ffffff;  /* 输入框内字体颜色为白色 */
-            font-size: 18px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            background-color: #11171C;  /* 输入框背景颜色修改为深灰色 */
         }
         /* 调整标题位置 */
         .css-18e3th9 {
