@@ -1,51 +1,90 @@
 import streamlit as st
 from itertools import product
-import smtplib
-from email.message import EmailMessage
 
-# 应用自定义 CSS
 def local_css():
     st.markdown("""
         <style>
+        /* 导入字体 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap');
         /* 全局字体和背景 */
-        @import url('https://fonts.googleapis.com/css2?family=Microsoft+YaHei&display=swap');
         html, body, [class*="css"]  {
-            font-family: 'Microsoft YaHei', sans-serif;
-            background-color: #f0f2f6;
+            font-family: 'Noto Serif SC', serif;
+            background-color: #f5f5f5;
         }
         /* 标题样式 */
-        h1 {
-            color: #FF8C00;
+        .title {
+            text-align: center;
+            color: #2F4F4F;
             font-weight: bold;
+            font-size: 36px;
+            margin-bottom: 10px;
         }
         /* 输入框标签样式 */
         label {
-            font-weight: bold;
-            font-size: 16px;
-            color: #333333;
+            font-weight: 600;
+            font-size: 18px;
+            color: #2F4F4F;
         }
         /* 按钮样式 */
         .stButton > button {
-            background-color: #FF8C00;
+            background-color: #556B2F;
             color: #ffffff;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 18px;
             height: 50px;
             width: 100%;
+            border: none;
+            transition: background-color 0.3s ease;
         }
         .stButton > button:hover {
-            background-color: #e07c00;
+            background-color: #6B8E23;
         }
         /* 侧边栏样式 */
-        .css-1d391kg {
+        .sidebar .sidebar-content {
+            background-image: linear-gradient(#2F4F4F,#708090);
+            color: white;
+        }
+        .sidebar .sidebar-content h2 {
+            color: white;
+            font-size: 24px;
+        }
+        .sidebar .sidebar-content .option {
+            font-size: 18px;
+            font-weight: 500;
+        }
+        /* 输入框样式 */
+        .stTextArea textarea {
             background-color: #ffffff;
+            color: #2F4F4F;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+        /* 调整标题位置 */
+        .css-18e3th9 {
+            padding-top: 0;
+        }
+        /* 表单布局 */
+        .stForm {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        /* 调整提示信息样式 */
+        .stSuccess, .stError, .stWarning {
+            font-size: 16px;
         }
         </style>
         """, unsafe_allow_html=True)
 
 def main():
     local_css()
-    st.title("数据输入工具")
+
+    # 创建标题容器并将标题放置在左上角
+    title_container = st.container()
+    with title_container:
+        st.markdown('<div class="title"><h1>数据输入工具</h1></div>', unsafe_allow_html=True)
 
     # 模式选择
     st.sidebar.header("选择模式")
@@ -59,12 +98,20 @@ def main():
             input_fields = ["BN", "项目名称", "点位", "素材", "人群", "出价方式", "日期", "备注"]
         separator = "_"
     else:
-        input_fields = ["上线日期", "目的", "人群", "素材", "设备（无用&占位）", "定向城市（无&占位）", "搭建日期（无用$占位）"]
+        input_fields = ["上线日期", "目的", "人群", "素材", "设备（无用$占位）", "定向城市（无用$占位）", "搭建日期（无用$占位）"]
         separator = "-"
 
     st.write("---")  # 分割线
 
-    st.header("请输入以下信息：")
+    st.subheader("请输入以下信息")
+    st.markdown("""
+                每一栏通过`回车键`分割, e.g \n
+               ##### 素材
+               素材A \n
+               素材B \n
+               素材C
+               ```
+               """)
 
     # 使用表单组织输入组件
     with st.form("input_form"):
@@ -77,9 +124,7 @@ def main():
             col = cols[idx % num_cols]
             with col:
                 inputs[field] = st.text_area(field, height=100)
-
-        # 邮箱输入
-        email = st.text_input("请输入您的邮箱地址（可选）")
+        
         st.write(" ")
 
         # 提交按钮
@@ -88,28 +133,32 @@ def main():
     if submitted:
         combinations = generate_combinations(inputs, mode, separator)
         if combinations:
-            st.success("生成成功！")
+            st.success("生成成功！", icon="🔥")
+
             # 使用 expander 展示组合结果
             with st.expander("点击展开组合结果"):
                 for combo in combinations:
                     st.write(combo)
-            # 发送邮件
-            if email:
-                send_email(email, combinations)
         else:
             st.error("请确保所有必填字段都已填写！")
-        
+
 def generate_combinations(inputs, mode, separator):
     # 将输入的每一项按行分割
     items_list = []
     for key, value in inputs.items():
         lines = value.strip().split('\n')
         lines = [line.strip() for line in lines if line.strip()]
+        
         if not lines:
-            if mode == "抖音" and ("设备" in key or "定向城市" in key):
-                lines = ["&"]
-            elif mode == "抖音" and "搭建日期" in key:
-                lines = ["$"]
+            if mode == "抖音":
+                # 对于“抖音”模式的可选字段，设置占位符
+                if "设备" in key or "定向城市" in key:
+                    lines = ["$"]
+                elif "搭建日期" in key:
+                    lines = ["$"]
+                else:
+                    st.warning(f"请填写 {key} 字段！")
+                    return []
             else:
                 st.warning(f"请填写 {key} 字段！")
                 return []
@@ -118,27 +167,9 @@ def generate_combinations(inputs, mode, separator):
     # 生成组合
     combinations = list(product(*items_list))
     result = [separator.join(combo) for combo in combinations]
+    result = [separator.join(combo).replace('$', '\$') for combo in combinations]
     return result
 
-def send_email(recipient_email, combinations):
-    # 组合结果作为邮件内容
-    email_content = "组合结果：\n\n" + "\n".join(combinations)
-    try:
-        # 创建邮件消息
-        msg = EmailMessage()
-        msg["Subject"] = "组合结果"
-        msg["From"] = 'your_email@example.com'  # 替换为您的邮箱
-        msg["To"] = recipient_email
-        msg.set_content(email_content)
-
-        # 发送邮件
-        server = smtplib.SMTP_SSL('smtp.example.com', 465)  # 替换为您的SMTP服务器和端口
-        server.login(msg['From'], "your_email_password")  # 替换为您的邮箱和密码
-        server.sendmail(msg['From'], recipient_email, msg.as_string())
-        server.quit()
-        st.info("邮件已发送！")
-    except Exception as e:
-        st.error(f"发送邮件失败：{e}")
 
 if __name__ == "__main__":
     main()
