@@ -178,6 +178,7 @@ def main():
                                 </button>
                                 """
                 html(copy_button_html)
+                
                 st.text(t, unsafe_allow_html=True)
         else:
             st.error("请确保所有必填字段都已填写！")
