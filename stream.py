@@ -94,15 +94,15 @@ def main():
         separator = "-"
 
     st.subheader("请输入以下信息")
-    st.markdown("""
-                每一栏通过`回车键`分割, e.g \n
-               ### 素材
+    st.info("""
+                每一栏通过回车键分割, e.g \n
+               ##### 素材
                 ```
                素材A 
                素材B 
                素材C
                ```
-               """)
+               """, icon="ℹ️")
 
     # 使用表单组织输入组件
     with st.form("input_form"):
