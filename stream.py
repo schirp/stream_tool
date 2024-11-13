@@ -6,7 +6,7 @@ def local_css():
     st.markdown("""
         <style>
         /* 导入字体 */
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap');
+        @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&subset=greek');
         /* 全局字体和背景 */
         html, body, [class*="css"]  {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
