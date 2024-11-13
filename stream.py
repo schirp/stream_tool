@@ -157,12 +157,10 @@ def main():
                 t = ''
                 for idx, combo in enumerate(combinations, start=1):
                     t +=  custom_text(idx, combo)
-                st.markdown(f'''{t}''', unsafe_allow_html=True)
-
                 # HTML和JavaScript代码实现复制功能
                 copy_button_html = f"""
                                 <button style="
-                                    margin-top: 5px;
+                                    margin-top: 3px;
                                     padding: 8px 16px;
                                     font-size: 16px;
                                     color: white;
@@ -180,6 +178,7 @@ def main():
                                 </button>
                                 """
                 html(copy_button_html)
+                st.text(t, unsafe_allow_html=True)
         else:
             st.error("请确保所有必填字段都已填写！")
 
