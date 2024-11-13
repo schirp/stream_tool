@@ -6,7 +6,7 @@ def local_css():
     st.markdown("""
         <style>
         /* 导入字体 */
-        @import url('https://fonts.googleapis.com/css?family=Roboto+Mono&subset=greek');
+        @import url('https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@500&display=swap');
         /* 全局字体和背景 */
         html, body, [class*="css"]  {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -85,9 +85,10 @@ def local_css():
         """, unsafe_allow_html=True)
 # 为文本设置样式
 def custom_text(idx, text):
+    idx = '&nbsp;&nbsp;&nbsp;'+str(idx) if idx < 10 else idx
     return f'''
-    <div style="background-color: #333; padding: 10px; border-radius: 4px;">
-        <span style="color: gray; font-style: bold;">{idx}&emsp;&emsp;</span>
+    <div style="background-color: #333; padding: 2px; border-radius: 2px;">
+        <span style="color: gray; font-style: bold; text-align:right;">;&nbsp;{idx}&emsp;;&nbsp;</span>
         <span style="color: white; font-weight: normal;">{text}</span>
     </div>
     '''
