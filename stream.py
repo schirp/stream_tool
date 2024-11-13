@@ -96,9 +96,10 @@ def main():
     st.subheader("请输入以下信息")
     st.markdown("""
                 每一栏通过`回车键`分割, e.g \n
-               ##### 素材
-               素材A \n
-               素材B \n
+               ### 素材
+                ```
+               素材A 
+               素材B 
                素材C
                ```
                """)
@@ -113,7 +114,7 @@ def main():
         for idx, field in enumerate(input_fields):
             col = cols[idx % num_cols]
             with col:
-                inputs[field] = st.text_area(field, height=100)
+                inputs[field] = st.text_area(field, height=80)
         
         st.write(" ")
 
