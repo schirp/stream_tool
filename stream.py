@@ -155,8 +155,8 @@ def main():
                 
                 # 显示每个组合结果并附加行号
                 for idx, combo in enumerate(combinations, start=1):
-                    t =  {custom_text(idx, combo)}
-                    st.info(f"""'''{t}'''""")
+                    t =  custom_text(idx, combo)
+                    st.markdown(f'''{t}''', unsafe_allow_html=True)
                 
                 # HTML和JavaScript代码实现复制功能
                 copy_button_html = f"""
