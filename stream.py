@@ -1,5 +1,6 @@
 import streamlit as st
 from itertools import product
+from streamlit.components.v1 import html
 
 def local_css():
     st.markdown("""
@@ -8,7 +9,7 @@ def local_css():
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500&display=swap');
         /* 全局字体和背景 */
         html, body, [class*="css"]  {
-            font-family: 'Noto Serif SC', serif;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background-color: #f5f5f5;
         }
         /* 标题样式 */
@@ -16,13 +17,27 @@ def local_css():
             text-align: center;
             color: #FF8C00;  /* 标题颜色为橙色 */
             font-weight: bold;
-            font-size: 36px;
+            font-size: 30px;
             margin-bottom: 10px;
+        }
+         /* 输入框样式 */
+        .stTextInput > div > div > input {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        padding: 14px;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        }
+        /* 这里添加自定义的CSS样式 */
+        .stMarkdown {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: #4a4a4a;
         }
         /* 输入框标签样式 */
         label {
             font-weight: 600;
-            font-size: 18px;
+            font-size: 12px;
             color: #A9A9A9;  /* 修改为深灰色 */
         }
         /* 按钮样式 */
@@ -68,7 +83,14 @@ def local_css():
         }
         </style>
         """, unsafe_allow_html=True)
-
+# 为文本设置样式
+def custom_text(idx, text):
+    return f'''
+    <div style="background-color: #333; padding: 10px; border-radius: 4px;">
+        <span style="color: gray; font-style: bold;">{idx}&emsp;&emsp;</span>
+        <span style="color: white; font-weight: normal;">{text}</span>
+    </div>
+    '''
 
 def main():
     local_css()
@@ -93,13 +115,12 @@ def main():
         input_fields = ["上线日期", "目的", "人群", "素材", "设备（无用$占位）", "定向城市（无用$占位）", "搭建日期（无用$占位）"]
         separator = "-"
 
-    st.subheader("请输入以下信息")
     st.info("""
                 每一栏通过回车键分割, e.g \n
                ##### 素材
                 ```
-               素材A 
-               素材B 
+               素材A
+               素材B
                素材C
                ```
                """, icon="ℹ️")
@@ -119,7 +140,7 @@ def main():
         st.write(" ")
 
         # 提交按钮
-        submitted = st.form_submit_button("生成组合")
+        submitted = st.form_submit_button("生成组合",icon='▶️')
 
     if submitted:
         combinations = generate_combinations(inputs, mode, separator)
@@ -127,9 +148,35 @@ def main():
             st.success("生成成功！", icon="🔥")
 
             # 使用 expander 展示组合结果
-            with st.expander("点击展开组合结果"):
-                for combo in combinations:
-                    st.write(combo)
+            with st.expander("点击展开组合结果", icon='🔍'):
+                # 初始化组合字符串，用于复制功能
+                combo_text = "\n".join(["".join(combo) for combo in combinations])
+                
+                # 显示每个组合结果并附加行号
+                for idx, combo in enumerate(combinations, start=1):
+                    st.markdown(custom_text(idx, combo), unsafe_allow_html=True)
+                
+                # HTML和JavaScript代码实现复制功能
+                copy_button_html = f"""
+                                <button style="
+                                    margin-top: 5px;
+                                    padding: 8px 16px;
+                                    font-size: 16px;
+                                    color: white;
+                                    background-color: #0d6efd;  /* 蓝色背景 */
+                                    border: none;
+                                    border-radius: 5px;
+                                    cursor: pointer;
+                                    box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+                                    transition: background-color 0.3s, box-shadow 0.3s;
+                                "
+                                onmouseover="this.style.backgroundColor='#0b5ed7'; this.style.boxShadow='0 0 15px rgba(0,0,0,0.3);'"
+                                onmouseout="this.style.backgroundColor='#0d6efd'; this.style.boxShadow='2px 2px 5px rgba(0,0,0,0.2);'"
+                                onclick='navigator.clipboard.writeText(`{combo_text}`)'>
+                                一键复制
+                                </button>
+                                """
+                html(copy_button_html)
         else:
             st.error("请确保所有必填字段都已填写！")
 
@@ -157,10 +204,9 @@ def generate_combinations(inputs, mode, separator):
     
     # 生成组合
     combinations = list(product(*items_list))
+    #result = [separator.join(combo).replace('$', '\$') for combo in combinations]
     result = [separator.join(combo) for combo in combinations]
-    result = [separator.join(combo).replace('$', '\$') for combo in combinations]
     return result
-
 
 if __name__ == "__main__":
     main()
