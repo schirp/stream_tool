@@ -156,8 +156,8 @@ def main():
                 # 显示每个组合结果并附加行号
                 for idx, combo in enumerate(combinations, start=1):
                     t =  custom_text(idx, combo)
-                    st.markdown(f'''{t}''', unsafe_allow_html=True)
-                
+                st.markdown(f'''{t}''', unsafe_allow_html=True)
+
                 # HTML和JavaScript代码实现复制功能
                 copy_button_html = f"""
                                 <button style="
@@ -165,7 +165,7 @@ def main():
                                     padding: 8px 16px;
                                     font-size: 16px;
                                     color: white;
-                                    background-color: #0d6efd;  /* 蓝色背景 */
+                                    background-color: #0d6efd;  
                                     border: none;
                                     border-radius: 5px;
                                     cursor: pointer;
@@ -178,7 +178,7 @@ def main():
                                 一键复制
                                 </button>
                                 """
-                #html(copy_button_html)
+                html(copy_button_html)
         else:
             st.error("请确保所有必填字段都已填写！")
 
