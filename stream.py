@@ -163,7 +163,7 @@ def main():
                                 <button style="
                                     margin-top: 3px;
                                     padding: 8px 16px;
-                                    font-size: 16px;
+                                    font-size: 14px;
                                     color: white;
                                     background-color: #0d6efd;  
                                     border: none;
@@ -178,10 +178,9 @@ def main():
                                 一键复制
                                 </button>
                                 """
-                html(copy_button_html)
-
+            
                 st.markdown(t, unsafe_allow_html=True)
-                
+                html(copy_button_html)
         else:
             st.error("请确保所有必填字段都已填写！")
 
