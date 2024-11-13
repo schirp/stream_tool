@@ -154,6 +154,7 @@ def main():
                 combo_text = "\n".join(["".join(combo) for combo in combinations])
                 
                 # 显示每个组合结果并附加行号
+                t = ''
                 for idx, combo in enumerate(combinations, start=1):
                     t +=  custom_text(idx, combo)
                 st.markdown(f'''{t}''', unsafe_allow_html=True)
