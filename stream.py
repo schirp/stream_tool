@@ -88,7 +88,7 @@ def custom_text(idx, text):
     idx = '&nbsp;&nbsp;&nbsp;'+str(idx) if idx < 10 else idx
     return f'''
     <div style="background-color: #333; padding: 2px; border-radius: 2px;">
-        <span style="color: gray; font-style: bold; text-align:right;">;&nbsp;{idx}&emsp;;&nbsp;</span>
+        <span style="color: gray; font-style: bold; text-align:right;">&nbsp;{idx}&emsp;&nbsp;</span>
         <span style="color: white; font-weight: normal;">{text}</span>
     </div>
     '''
